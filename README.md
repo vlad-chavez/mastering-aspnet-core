@@ -3,7 +3,7 @@
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](LICENSE.md) 
 [![AI Generated](https://img-shields.io/badge/Content%20Source-AI%20Generated-red.svg)](DISCLAIMER.md)
 
-This repository contains an **AI-generated learning roadmap and study notes** for **ASP.NET Core**. The entire structure, core notes, and project outlines are **derived from the content of the "ASP.NET Core Ultimate Guide" course by Harsha Vardhan and modified to some extent by the AI.**
+This repository contains an **AI-generated learning roadmap and study notes** for **ASP.NET Core**. The entire structure, core notes, and project outlines are **derived from the content of the [ASP.NET Core Ultimate Guide](https://github.com/Harsha-Global/AspNetCore-Harsha.git) course by Harsha Vardhan and modified to some extent by the AI.**
 
 ---
 
