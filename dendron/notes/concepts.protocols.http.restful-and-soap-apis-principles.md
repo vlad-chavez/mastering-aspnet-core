@@ -2,31 +2,39 @@
 id: shg3e618yjhjf9bwczvni9k
 title: RESTful and SOAP APIs Principles
 desc: ''
-updated: 1759485783409
+updated: 1759511547050
 created: 1759485743790
 ---
+# RESTful and SOAP APIs
 
-RESTful and SOAP APIs
 Let me explain these two major API architectural styles, their principles, differences, and when to use each.
 
-REST (Representational State Transfer)
-What is REST?
+-----
+
+## REST (Representational State Transfer)
+
+### What is REST?
+
 REST is an architectural style (not a protocol) for designing networked applications. It was introduced by Roy Fielding in 2000 and relies on stateless, client-server communication, typically using HTTP.
-Core Principles of REST
-1. Client-Server Architecture
 
-Clear separation between client (user interface) and server (data storage)
-They can evolve independently
-Client doesn't need to know about data storage
-Server doesn't need to know about UI
+### Core Principles of REST
 
-2. Stateless
+#### 1\. Client-Server Architecture
 
-Each request must contain all information needed to understand and process it
-Server doesn't store client context between requests
-Session state is kept entirely on the client
+  * Clear separation between client (user interface) and server (data storage).
+  * They can evolve independently.
+  * The client doesn't need to know about data storage.
+  * The server doesn't need to know about UI.
 
-Example:
+#### 2\. Stateless
+
+  * Each request must contain all information needed to understand and process it.
+  * The server doesn't store client context between requests.
+  * Session state is kept entirely on the client.
+
+**Example:**
+
+```
 // ❌ Stateful (not RESTful)
 Request 1: POST /login → Server stores session
 Request 2: GET /profile → Server uses stored session
@@ -35,43 +43,65 @@ Request 2: GET /profile → Server uses stored session
 Request: GET /profile
 Headers: Authorization: Bearer token123
 // Every request contains authentication
-3. Cacheable
+```
 
-Responses must define themselves as cacheable or non-cacheable
-Improves performance by reducing server load
+#### 3\. Cacheable
 
+  * Responses must define themselves as cacheable or non-cacheable.
+  * Improves performance by reducing server load.
+
+<!-- end list -->
+
+```http
 HTTP/1.1 200 OK
 Cache-Control: max-age=3600
 ETag: "abc123"
 
 // Client can reuse this response for 1 hour
-4. Uniform Interface
+```
+
+#### 4\. Uniform Interface
+
 This is the most important constraint, with four sub-principles:
-a) Resource Identification
 
-Everything is a resource (user, product, order)
-Each resource has a unique URI
+**a) Resource Identification**
 
+  * Everything is a resource (user, product, order).
+  * Each resource has a unique URI.
+
+<!-- end list -->
+
+```
 /users/123
 /products/456
 /orders/789
-b) Manipulation Through Representations
+```
 
-Resources are manipulated using representations (JSON, XML)
-Client receives representation of resource, not the resource itself
+**b) Manipulation Through Representations**
 
-c) Self-Descriptive Messages
+  * Resources are manipulated using representations (JSON, XML).
+  * The client receives a representation of the resource, not the resource itself.
 
-Each message includes enough information to describe how to process it
+**c) Self-Descriptive Messages**
 
+  * Each message includes enough information to describe how to process it.
+
+<!-- end list -->
+
+```
 Content-Type: application/json
 Accept: application/json
-d) HATEOAS (Hypermedia As The Engine Of Application State)
+```
 
-Responses include links to related resources
-Client can navigate API dynamically
+**d) HATEOAS (Hypermedia As The Engine Of Application State)**
 
-json{
+  * Responses include links to related resources.
+  * The client can navigate the API dynamically.
+
+<!-- end list -->
+
+```json
+{
   "id": 123,
   "name": "John Doe",
   "links": {
@@ -80,64 +110,86 @@ json{
     "friends": "/users/123/friends"
   }
 }
-5. Layered System
+```
 
-Client can't tell if connected directly to server or through intermediary
-Allows load balancers, caches, proxies
+#### 5\. Layered System
 
-6. Code on Demand (Optional)
+  * The client can't tell if it's connected directly to the server or through an intermediary.
+  * Allows for load balancers, caches, and proxies.
 
-Server can extend client functionality by sending executable code
-Example: JavaScript sent to browser
+#### 6\. Code on Demand (Optional)
 
+  * The server can extend client functionality by sending executable code.
+  * Example: JavaScript sent to the browser.
 
-RESTful API Design Principles
-Use HTTP Methods Correctly
-GET    /users          # List all users (Read collection)
-GET    /users/123      # Get specific user (Read single)
-POST   /users          # Create new user (Create)
-PUT    /users/123      # Update entire user (Update/Replace)
-PATCH  /users/123      # Partially update user (Update/Modify)
-DELETE /users/123      # Delete user (Delete)
-Resource Naming Conventions
-✅ Good REST URLs:
-GET    /users                    # Collection (plural nouns)
-GET    /users/123                # Specific resource
-GET    /users/123/posts          # Nested resource
-GET    /posts?author=123         # Query parameters for filtering
-GET    /posts?sort=date&limit=10 # Pagination and sorting
-❌ Bad REST URLs:
+### RESTful API Design Principles
+
+#### Use HTTP Methods Correctly
+
+```
+GET    /users         # List all users (Read collection)
+GET    /users/123     # Get specific user (Read single)
+POST   /users         # Create new user (Create)
+PUT    /users/123     # Update entire user (Update/Replace)
+PATCH  /users/123     # Partially update user (Update/Modify)
+DELETE /users/123     # Delete user (Delete)
+```
+
+#### Resource Naming Conventions
+
+✅ **Good REST URLs:**
+
+```
+GET    /users                   # Collection (plural nouns)
+GET    /users/123               # Specific resource
+GET    /users/123/posts         # Nested resource
+GET    /posts?author=123        # Query parameters for filtering
+GET    /posts?sort=date&limit=10# Pagination and sorting
+```
+
+❌ **Bad REST URLs:**
+
+```
 GET    /getUser?id=123           # Avoid verbs in URL
 POST   /user/delete/123          # Use DELETE method instead
 GET    /users/123/delete         # Wrong method for action
 GET    /api/v1/getUserPosts      # Too RPC-like
-Use Proper Status Codes
-200 OK              # Successful GET, PUT, PATCH
-201 Created         # Successful POST
-204 No Content      # Successful DELETE
-400 Bad Request     # Invalid request data
-401 Unauthorized    # Missing/invalid authentication
-403 Forbidden       # Authenticated but not authorized
-404 Not Found       # Resource doesn't exist
-409 Conflict        # Duplicate resource
-422 Unprocessable   # Validation error
-500 Server Error    # Server-side error
-Versioning
-# URL versioning (most common)
-https://api.example.com/v1/users
-https://api.example.com/v2/users
+```
 
-# Header versioning
-Accept: application/vnd.example.v1+json
+#### Use Proper Status Codes
 
-# Query parameter versioning
-https://api.example.com/users?version=1
+  * **200 OK**: Successful GET, PUT, PATCH
+  * **201 Created**: Successful POST
+  * **204 No Content**: Successful DELETE
+  * **400 Bad Request**: Invalid request data
+  * **401 Unauthorized**: Missing/invalid authentication
+  * **403 Forbidden**: Authenticated but not authorized
+  * **404 Not Found**: Resource doesn't exist
+  * **409 Conflict**: Duplicate resource
+  * **422 Unprocessable**: Validation error
+  * **500 Server Error**: Server-side error
 
-Complete REST API Example
-User Management API:
-# List users with pagination
-GET /api/v1/users?page=1&limit=20
-Response: 200 OK
+#### Versioning
+
+**URL versioning (most common)**
+`https://api.example.com/v1/users`
+`https://api.example.com/v2/users`
+
+**Header versioning**
+`Accept: application/vnd.example.v1+json`
+
+**Query parameter versioning**
+`https://api.example.com/users?version=1`
+
+### Complete REST API Example
+
+A User Management API:
+
+**List users with pagination**
+`GET /api/v1/users?page=1&limit=20`
+**Response: 200 OK**
+
+```json
 {
   "data": [
     {"id": 1, "name": "John", "email": "john@example.com"},
@@ -153,10 +205,13 @@ Response: 200 OK
     }
   }
 }
+```
 
-# Get single user
-GET /api/v1/users/1
-Response: 200 OK
+**Get single user**
+`GET /api/v1/users/1`
+**Response: 200 OK**
+
+```json
 {
   "id": 1,
   "name": "John Doe",
@@ -168,100 +223,95 @@ Response: 200 OK
     "comments": "/api/v1/users/1/comments"
   }
 }
+```
 
-# Create user
-POST /api/v1/users
-Content-Type: application/json
+**Create user**
+`POST /api/v1/users`
+
+```json
 {
   "name": "Alice Smith",
   "email": "alice@example.com",
   "password": "secret123"
 }
-Response: 201 Created
-Location: /api/v1/users/3
+```
+
+**Response: 201 Created**
+`Location: /api/v1/users/3`
+
+```json
 {
   "id": 3,
   "name": "Alice Smith",
   "email": "alice@example.com",
   "created_at": "2025-10-03T14:30:00Z"
 }
+```
 
-# Update user (full replacement)
-PUT /api/v1/users/3
-Content-Type: application/json
+**Update user (full replacement)**
+`PUT /api/v1/users/3`
+
+```json
 {
   "name": "Alice Johnson",
   "email": "alice.johnson@example.com"
 }
-Response: 200 OK
+```
 
-# Partial update
-PATCH /api/v1/users/3
-Content-Type: application/json
+**Response: 200 OK**
+
+**Partial update**
+`PATCH /api/v1/users/3`
+
+```json
 {
   "email": "newemail@example.com"
 }
-Response: 200 OK
+```
 
-# Delete user
-DELETE /api/v1/users/3
-Response: 204 No Content
+**Response: 200 OK**
 
-# Get user's posts (nested resource)
-GET /api/v1/users/1/posts
-Response: 200 OK
-{
-  "data": [
-    {
-      "id": 101,
-      "title": "My First Post",
-      "user_id": 1,
-      "created_at": "2025-10-01T12:00:00Z"
-    }
-  ]
-}
+**Delete user**
+`DELETE /api/v1/users/3`
+**Response: 204 No Content**
 
-# Search/filter users
-GET /api/v1/users?email=john@example.com&role=admin
-Response: 200 OK
+-----
 
-SOAP (Simple Object Access Protocol)
-What is SOAP?
+## SOAP (Simple Object Access Protocol)
+
+### What is SOAP?
+
 SOAP is a protocol (not just an architectural style) for exchanging structured information using XML. It was developed in the late 1990s and is commonly used in enterprise environments.
-Core Characteristics of SOAP
-1. Protocol-Based
 
-Strict standards and specifications
-Can use multiple protocols: HTTP, SMTP, TCP, UDP
-Most commonly uses HTTP/HTTPS
+### Core Characteristics of SOAP
 
-2. XML-Only
+1.  **Protocol-Based**
+      * Strict standards and specifications.
+      * Can use multiple protocols: HTTP, SMTP, TCP, UDP.
+      * Most commonly uses HTTP/HTTPS.
+2.  **XML-Only**
+      * All messages are XML.
+      * Heavily structured and verbose.
+      * Strongly typed.
+3.  **Built-in Error Handling**
+      * Standardized `fault` elements.
+      * Detailed error information.
+4.  **WS-\* Standards**
+      * **WS-Security** (authentication, encryption)
+      * **WS-AtomicTransaction** (transaction handling)
+      * **WS-ReliableMessaging** (guaranteed delivery)
+      * **WS-Addressing** (routing)
 
-All messages are XML
-Heavily structured and verbose
-Strongly typed
+### SOAP Message Structure
 
-3. Built-in Error Handling
-
-Standardized fault elements
-Detailed error information
-
-4. WS- Standards*
-
-WS-Security (authentication, encryption)
-WS-AtomicTransaction (transaction handling)
-WS-ReliableMessaging (guaranteed delivery)
-WS-Addressing (routing)
-
-
-SOAP Message Structure
 A SOAP message has three main parts:
-xml<?xml version="1.0"?>
+
+```xml
+<?xml version="1.0"?>
 <soap:Envelope 
   xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
   xmlns:example="http://example.com">
   
-  <!-- Optional: Header for metadata, authentication -->
   <soap:Header>
     <example:Authentication>
       <example:Username>admin</example:Username>
@@ -269,7 +319,6 @@ xml<?xml version="1.0"?>
     </example:Authentication>
   </soap:Header>
   
-  <!-- Required: Body contains the actual message -->
   <soap:Body>
     <example:GetUserRequest>
       <example:UserId>123</example:UserId>
@@ -277,15 +326,21 @@ xml<?xml version="1.0"?>
   </soap:Body>
   
 </soap:Envelope>
+```
 
-SOAP Request/Response Example
-Request: Get User Information
+### SOAP Request/Response Example
+
+**Request: Get User Information**
+
+```http
 POST /api/userservice HTTP/1.1
 Host: example.com
 Content-Type: text/xml; charset=utf-8
 SOAPAction: "http://example.com/GetUser"
 Content-Length: 500
+```
 
+```xml
 <?xml version="1.0"?>
 <soap:Envelope 
   xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
@@ -302,11 +357,17 @@ Content-Length: 500
   </soap:Body>
   
 </soap:Envelope>
-Response: User Information
+```
+
+**Response: User Information**
+
+```http
 HTTP/1.1 200 OK
 Content-Type: text/xml; charset=utf-8
 Content-Length: 650
+```
 
+```xml
 <?xml version="1.0"?>
 <soap:Envelope 
   xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
@@ -324,8 +385,12 @@ Content-Length: 650
   </soap:Body>
   
 </soap:Envelope>
-Error Response (SOAP Fault)
-xml<?xml version="1.0"?>
+```
+
+### Error Response (SOAP Fault)
+
+```xml
+<?xml version="1.0"?>
 <soap:Envelope 
   xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
   
@@ -347,88 +412,48 @@ xml<?xml version="1.0"?>
   </soap:Body>
   
 </soap:Envelope>
+```
 
-WSDL (Web Services Description Language)
-SOAP services are described using WSDL files - XML documents that define:
+### WSDL (Web Services Description Language)
 
-Available operations (methods)
-Input/output message formats
-Data types
-Service endpoints
+SOAP services are described using WSDL files—XML documents that define:
 
-WSDL Example (simplified):
-xml<?xml version="1.0"?>
-<definitions 
-  name="UserService"
-  targetNamespace="http://example.com/user"
-  xmlns="http://schemas.xmlsoap.org/wsdl/">
-  
-  <!-- Data types -->
-  <types>
-    <xsd:schema>
-      <xsd:element name="GetUserRequest">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="UserId" type="xsd:int"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-      
-      <xsd:element name="GetUserResponse">
-        <xsd:complexType>
-          <xsd:sequence>
-            <xsd:element name="User" type="UserType"/>
-          </xsd:sequence>
-        </xsd:complexType>
-      </xsd:element>
-    </xsd:schema>
-  </types>
-  
-  <!-- Messages -->
-  <message name="GetUserRequestMsg">
-    <part name="parameters" element="GetUserRequest"/>
-  </message>
-  
-  <message name="GetUserResponseMsg">
-    <part name="parameters" element="GetUserResponse"/>
-  </message>
-  
-  <!-- Port type (operations) -->
-  <portType name="UserPortType">
-    <operation name="GetUser">
-      <input message="GetUserRequestMsg"/>
-      <output message="GetUserResponseMsg"/>
-    </operation>
-  </portType>
-  
-  <!-- Binding (protocol details) -->
-  <binding name="UserBinding" type="UserPortType">
-    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
-    <operation name="GetUser">
-      <soap:operation soapAction="http://example.com/GetUser"/>
-    </operation>
-  </binding>
-  
-  <!-- Service endpoint -->
-  <service name="UserService">
-    <port name="UserPort" binding="UserBinding">
-      <soap:address location="http://example.com/api/userservice"/>
-    </port>
-  </service>
-  
-</definitions>
+  * Available operations (methods)
+  * Input/output message formats
+  * Data types
+  * Service endpoints
 
-REST vs SOAP: Detailed Comparison
-Architecture vs Protocol
-AspectRESTSOAPTypeArchitectural styleProtocolRulesGuidelines, flexibleStrict specificationsStandardsNo strict standardW3C standard
+-----
 
-Message Format
-AspectRESTSOAPFormatJSON, XML, HTML, plain textXML onlySizeLightweightVerbose, largerReadabilityHuman-readable (especially JSON)Complex XML structure
-Example - Same data:
-REST (JSON):
-json{"id": 123, "name": "John", "email": "john@example.com"}
-SOAP (XML):
-xml<soap:Envelope xmlns:soap="...">
+## REST vs SOAP: Detailed Comparison
+
+### Architecture vs Protocol
+
+| Aspect    | REST                  | SOAP                   |
+| :-------- | :-------------------- | :--------------------- |
+| **Type** | Architectural style   | Protocol               |
+| **Rules** | Guidelines, flexible  | Strict specifications  |
+| **Standards** | No strict standard    | W3C standard           |
+
+### Message Format
+
+| Aspect         | REST                           | SOAP                        |
+| :------------- | :----------------------------- | :-------------------------- |
+| **Format** | JSON, XML, HTML, plain text    | XML only                    |
+| **Size** | Lightweight                    | Verbose, larger             |
+| **Readability** | Human-readable (especially JSON) | Complex XML structure       |
+
+**Example - Same data:**
+**REST (JSON):**
+
+```json
+{"id": 123, "name": "John", "email": "john@example.com"}
+```
+
+**SOAP (XML):**
+
+```xml
+<soap:Envelope xmlns:soap="...">
   <soap:Body>
     <GetUserResponse>
       <User>
@@ -439,114 +464,80 @@ xml<soap:Envelope xmlns:soap="...">
     </GetUserResponse>
   </soap:Body>
 </soap:Envelope>
+```
 
-Transport Protocol
-AspectRESTSOAPProtocolHTTP/HTTPS onlyHTTP, SMTP, TCP, UDP, JMSMethodsUses HTTP methods (GET, POST, etc.)Typically only POST
+### Transport Protocol
 
-Security
-AspectRESTSOAPSecurityHTTPS, OAuth, JWT tokensWS-Security (built-in)EncryptionTLS/SSL at transport layerMessage-level securityStandardsNo built-in standardWS-Security, WS-Trust
-REST Security Example:
-GET /api/users/123
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SOAP Security Example:
-xml<soap:Header>
-  <wsse:Security>
-    <wsse:UsernameToken>
-      <wsse:Username>admin</wsse:Username>
-      <wsse:Password Type="PasswordDigest">...</wsse:Password>
-    </wsse:UsernameToken>
-  </wsse:Security>
-</soap:Header>
+| Aspect    | REST                             | SOAP                        |
+| :-------- | :------------------------------- | :-------------------------- |
+| **Protocol** | HTTP/HTTPS only                  | HTTP, SMTP, TCP, UDP, JMS   |
+| **Methods** | Uses HTTP methods (GET, POST, etc.) | Typically only POST         |
 
-Error Handling
-AspectRESTSOAPErrorsHTTP status codesSOAP Fault elementStructureFlexibleStandardizedDetailVaries by implementationComprehensive
-REST Error:
-HTTP/1.1 404 Not Found
-Content-Type: application/json
+### Security
 
-{
-  "error": "User not found",
-  "code": "USER_NOT_FOUND",
-  "details": "No user exists with ID 123"
-}
-SOAP Fault:
-xml<soap:Fault>
-  <faultcode>soap:Client</faultcode>
-  <faultstring>User not found</faultstring>
-  <detail>
-    <error>No user exists with ID 123</error>
-  </detail>
-</soap:Fault>
+| Aspect      | REST                           | SOAP                          |
+| :---------- | :----------------------------- | :---------------------------- |
+| **Security** | HTTPS, OAuth, JWT tokens       | WS-Security (built-in)        |
+| **Encryption** | TLS/SSL at transport layer     | Message-level security        |
+| **Standards** | No built-in standard           | WS-Security, WS-Trust         |
 
-State Management
-AspectRESTSOAPStateStatelessCan be stateful or statelessSessionNo server-side sessionCan maintain session
+### Error Handling
 
-Caching
-AspectRESTSOAPCachingBuilt-in HTTP cachingNo built-in cachingPerformanceBetter for read-heavy operationsGenerally slower
+| Aspect      | REST                | SOAP                        |
+| :---------- | :------------------ | :-------------------------- |
+| **Errors** | HTTP status codes   | SOAP Fault element          |
+| **Structure** | Flexible            | Standardized                |
+| **Detail** | Varies by implementation | Comprehensive               |
 
-Discoverability
-AspectRESTSOAPAPI DescriptionOptional (OpenAPI/Swagger)WSDL (required)Auto-generationTools availableClient code auto-generated from WSDL
+### State Management
 
-Transaction Support
-AspectRESTSOAPACID TransactionsNot built-inWS-AtomicTransactionReliabilityManual implementationWS-ReliableMessaging
+| Aspect    | REST          | SOAP                       |
+| :-------- | :------------ | :------------------------- |
+| **State** | Stateless     | Can be stateful or stateless |
+| **Session** | No server-side session | Can maintain session         |
 
-Bandwidth Usage
-AspectRESTSOAPData sizeSmaller (especially JSON)Larger (XML overhead)EfficiencyMore efficientLess efficient
-Example bandwidth comparison:
+-----
 
-REST/JSON: ~80 bytes
-SOAP/XML: ~350 bytes (for same data)
+## When to Use REST
 
+✅ Use **REST** when:
 
-When to Use REST
-✅ Use REST when:
+  * **Public APIs** - Social media, payment gateways, cloud services
+  * **Mobile applications** - Bandwidth and battery constraints
+  * **Web applications** - Most modern web apps
+  * **Microservices** - Lightweight communication
+  * **Limited bandwidth** - Mobile networks, IoT devices
+  * **Rapid development** - Faster to implement
+  * **CRUD operations** - Simple data operations
+  * **Stateless operations** - No complex transactions
 
-Public APIs - Social media, payment gateways, cloud services
-Mobile applications - Bandwidth and battery constraints
-Web applications - Most modern web apps
-Microservices - Lightweight communication
-Limited bandwidth - Mobile networks, IoT devices
-Rapid development - Faster to implement
-CRUD operations - Simple data operations
-Stateless operations - No complex transactions
+**Examples:** Twitter API, GitHub API, Stripe Payment API, Google Maps API
 
-Examples:
+## When to Use SOAP
 
-Twitter API
-GitHub API
-Stripe Payment API
-Google Maps API
+✅ Use **SOAP** when:
 
+  * **Enterprise applications** - Banks, healthcare, government
+  * **High security requirements** - WS-Security features
+  * **ACID transactions** - Need guaranteed delivery
+  * **Formal contracts** - WSDL defines a strict contract
+  * **Async processing** - Can use protocols beyond HTTP
+  * **Legacy system integration** - Existing SOAP infrastructure
+  * **Stateful operations** - Need to maintain a conversation
+  * **Reliable messaging** - Cannot afford message loss
 
-When to Use SOAP
-✅ Use SOAP when:
+**Examples:** PayPal Payment Services (also offers REST), Financial services, Healthcare systems
 
-Enterprise applications - Banks, healthcare, government
-High security requirements - WS-Security features
-ACID transactions - Need guaranteed delivery
-Formal contracts - WSDL defines strict contract
-Async processing - Can use protocols beyond HTTP
-Legacy system integration - Existing SOAP infrastructure
-Stateful operations - Need to maintain conversation
-Reliable messaging - Cannot afford message loss
+-----
 
-Examples:
+## Modern Alternatives
 
-PayPal Payment Services (also offers REST)
-Financial services (money transfers)
-Healthcare systems (patient records)
-Telecom services
+### GraphQL
 
+A query language for APIs where the client specifies exactly what data it needs from a single endpoint. This reduces over-fetching and under-fetching.
 
-Modern Alternatives
-GraphQL
-
-Query language for APIs
-Client specifies exactly what data it needs
-Single endpoint
-Reduces over-fetching and under-fetching
-
-graphqlquery {
+```graphql
+query {
   user(id: 123) {
     name
     email
@@ -556,14 +547,25 @@ graphqlquery {
     }
   }
 }
-gRPC
+```
 
-Google's RPC framework
-Uses Protocol Buffers (binary format)
-HTTP/2 based
-High performance
+### gRPC
 
+Google's high-performance RPC framework that uses Protocol Buffers (a binary format) and is based on HTTP/2.
 
-Summary Table
-FeatureRESTSOAPComplexitySimpleComplexLearning CurveEasySteepPerformanceFasterSlowerFlexibilityHighLowStandardsLooseStrictBest ForPublic APIs, web/mobileEnterprise, high-securityPopularityVery highDecliningFutureDominantNiche/legacy
-Bottom line: REST has become the de facto standard for modern web APIs due to its simplicity and performance, while SOAP remains relevant in enterprise environments requiring strict security and transaction guarantees.
+-----
+
+## Summary Table
+
+| Feature          | REST                               | SOAP                                     |
+| :--------------- | :--------------------------------- | :--------------------------------------- |
+| **Complexity** | Simple                             | Complex                                  |
+| **Learning Curve** | Easy                               | Steep                                    |
+| **Performance** | Faster                             | Slower                                   |
+| **Flexibility** | High                               | Low                                      |
+| **Standards** | Loose                              | Strict                                   |
+| **Best For** | Public APIs, web/mobile            | Enterprise, high-security                |
+| **Popularity** | Very high                          | Declining                                |
+| **Future** | Dominant                           | Niche/legacy                             |
+
+**Bottom line:** REST has become the de facto standard for modern web APIs due to its simplicity and performance, while SOAP remains relevant in enterprise environments requiring strict security and transaction guarantees.

@@ -22,6 +22,5 @@ Can you give me an example of a Get and Post request and a response. Explain eac
 Can you explain HTTP methods?                              
 Can you explain status codes and headers?
 Explain Content-Type specific cases like  application/x-www-form-urlencoded and multipart/form-data and others?
-
 Can you explain RESTful and SOAP APIs principles?
-Can you explain JSON and XML serialization?
+Can you explain JSON and XML serialization in C#?
