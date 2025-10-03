@@ -26,14 +26,6 @@ The content structure, including the **notes and project outlines**, are based o
 
 ## 🚀 Roadmap Overview
 
-**(Your AI-Generated Roadmap/Notes will go here, e.g., ROADMAP.md)**
-
-* **Module 01:** Getting Started & HTTP Concepts
-* **Module 02:** Middleware and Routing
-* **Module 03:** Controllers & IActionResult
-* **Module 04:** Entity Framework Core
-* **Module 05:** xUnit Testing and Moq
-* ...etc.
 
 ## ✍️ My Learning Process (Human Input)
 
