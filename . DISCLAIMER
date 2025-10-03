@@ -1,0 +1,19 @@
+# AI-GENERATED CONTENT: DISCLAIMER AND TRANSPARENCY STATEMENT
+
+This repository contains educational content (roadmaps and learning notes) for **ASP.NET Core** generated primarily by large language models (LLMs) from several AI Providers.
+
+**Note on Content Derivation:** The organizational structure, core notes, and project outlines found in this repository are **derived from the content and examples** provided in the **"ASP.NET Core Ultimate Guide" course by Harsha Vardhan and modified to some extent by the AI.**
+
+**1. No Claim of Authorship or Copyright**
+* The content is machine-generated based on user prompts. **No human authorship or ownership is claimed** over the generated text.
+* The material is provided as a public learning resource and is explicitly dedicated to the **Public Domain via the CC0 1.0 License** (see LICENSE.md).
+
+**2. Accuracy and Verification Warning**
+* **The content may contain errors, inaccuracies, biases, or "hallucinations."** Generative AI systems can confidently present false information, especially when synthesizing or modifying existing material.
+* **Use as a starting point only.** This material is an outline and study aid, not an authoritative source. All critical facts, dates, formulas, and technical details for ASP.NET Core **must be independently verified** with reliable sources.
+
+**3. Non-Professional Advice**
+* The information is for **non-commercial, educational purposes only**. It does not constitute professional, legal, financial, or medical advice. Consult qualified professionals for specific guidance.
+
+**4. Prompt Engineering/Source of Input**
+* The human contribution to this repository is the act of **prompting the AI** to generate and adapt material based on the Harsha Vardhan course structure. The intellectual property of the content itself rests with the Public Domain.
