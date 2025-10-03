@@ -16,4 +16,12 @@ Can you give resources where I can learn about the topic in question?
 Explain launchSettings.json in asp.net core context?
 How can I switch between different development configurations?
 
+## Section 3
+Explain HTTP protocol? 
+Can you give me an example of a Get and Post request and a response. Explain each case?
+Can you explain HTTP methods?                              
+Can you explain status codes and headers?
+Explain Content-Type specific cases like  application/x-www-form-urlencoded and multipart/form-data and others?
 
+Can you explain RESTful and SOAP APIs principles?
+Can you explain JSON and XML serialization?

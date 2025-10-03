@@ -2,7 +2,7 @@
 id: acgaru10detr741w0p1aopu
 title: Questions
 desc: ''
-updated: 1759431482943
+updated: 1759478123537
 created: 1759430061592
 ---
 
@@ -115,3 +115,17 @@ Popular frameworks have large communities, extensive documentation, third-party 
 ASP.NET Core, Django (Python), Ruby on Rails, Express.js (Node.js), Spring (Java), and Laravel (PHP) are all popular web application frameworks.
 
 ## Section - 2 
+
+### What is Kestrel and what are advantages of Kestrel in Asp.Net Core?
+
+### What is the difference between IIS and Kestrel? Why do we need two web servers?
+
+### What is the purpose of launchSettings.json in asp.net core?
+
+### What is generic host or HostBuilder in .NET Core?
+
+### What is the purpose of the .csproj file?
+
+### What is IIS?
+
+### What does WebApplication.CreateBuilder() do?
