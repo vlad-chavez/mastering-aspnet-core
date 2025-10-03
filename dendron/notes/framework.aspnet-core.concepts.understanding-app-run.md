@@ -1,6 +1,6 @@
 ---
 id: dxxryuwfovfbxoaruvlo4ec
-title: Understanding App.Run()
+title: Understanding App Run
 desc: ''
 updated: 1759469108480
 created: 1759467221246

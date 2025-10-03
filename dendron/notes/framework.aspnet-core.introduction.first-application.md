@@ -359,4 +359,4 @@ The Program.cs boilerplate is your application's entry point:
 
 It's simple by default but can grow to handle complex enterprise applications! 🚀
 
-[[aspnet-core.concepts.understanding-app-run]]
+[[framework.aspnet-core.concepts.understanding-app-run]]
